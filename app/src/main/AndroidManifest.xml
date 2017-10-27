@@ -23,8 +23,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".Login.LoginActivity" />
+        <activity android:name=".Signup.SignupActivity" />
+        <activity android:name=".Dashboard.DashboardActivity" />
+        <activity android:name=".WordDetailActivity" />
+        <activity android:name=".Dictionary.DictionaryHomeActivity" />
+        <activity android:name=".Dictionary.DictionaryActivity" />
+        <activity android:name=".Comprehension.ComprehensionsActivity" />
+        <activity android:name=".Word_Meaning.MeaningActivity" />
+        <activity android:name=".Jumbled_Words.JumbledWordsActivity"></activity>
     </application>
 
 </manifest>

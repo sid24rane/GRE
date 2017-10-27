@@ -7,10 +7,11 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.maitr.gre.Login.LoginActivity;
+
 public class SplashScreen extends AppCompatActivity {
 
     public static final int duration = 1000;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
