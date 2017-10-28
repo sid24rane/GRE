@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.maitr.gre.Dictionary.DictionaryActivity;
+import com.example.maitr.gre.Dictionary.DictionaryHomeActivity;
 import com.example.maitr.gre.Jumbled_Words.JumbledWordsActivity;
 import com.example.maitr.gre.R;
 import com.example.maitr.gre.WordDetailActivity;
@@ -53,7 +54,7 @@ public class HomeFragment extends Fragment {
         wordList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), DictionaryActivity.class);
+                Intent i = new Intent(getContext(), DictionaryHomeActivity.class);
                 startActivity(i);
             }
         });
