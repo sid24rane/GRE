@@ -1,9 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.maitr.gre.Comprehension.ComprehensionsActivity">
+    tools:context="com.example.maitr.gre.Jumbled_Words.JumbledWordsActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:background="#33ff3877"
+        app:cardCornerRadius="4dp"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/comprehensionQuestion"
+                android:text="hsdgd ahgf yef qwfiuwy ______ wdhwiqywf"
+                android:textSize="20sp"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/compOptionA"
+                android:text="A) abc"
+                android:textSize="22sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="40dp"
+                android:clickable="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/compOptionB"
+                android:text="B) abc"
+                android:textSize="22sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/compOptionC"
+                android:text="C) abc"
+                android:textSize="22sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/compOptionD"
+                android:text="D) abc"
+                android:textSize="22sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/comprehensionCorrectAnswer"
+                android:text="Answer: A)abc"
+                android:textSize="22sp"
+                android:textColor="#00d86f"
+                />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</ScrollView>
+

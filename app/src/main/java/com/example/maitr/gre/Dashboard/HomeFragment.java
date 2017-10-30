@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.maitr.gre.Comprehension.ComprehensionsActivity;
 import com.example.maitr.gre.Dictionary.DictionaryActivity;
 import com.example.maitr.gre.Dictionary.DictionaryHomeActivity;
 import com.example.maitr.gre.Jumbled_Words.JumbledWordsActivity;
@@ -78,7 +79,7 @@ public class HomeFragment extends Fragment {
         comprehension.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), MeaningActivity.class);
+                Intent i = new Intent(getContext(), ComprehensionsActivity.class);
                 startActivity(i);
             }
         });
