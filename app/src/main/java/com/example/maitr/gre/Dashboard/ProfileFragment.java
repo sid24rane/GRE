@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.example.maitr.gre.Login.LoginActivity;
 import com.example.maitr.gre.R;
-import com.example.maitr.gre.Signup.SignupActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.maitr.gre.Comprehension.ComprehensionsActivity;
 import com.example.maitr.gre.Dictionary.DictionaryHomeActivity;
 import com.example.maitr.gre.Jumbled_Words.JumbledWordsActivity;
 import com.example.maitr.gre.R;
@@ -47,6 +48,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), WordDetailActivity.class);
                 startActivity(i);
+                getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
 
@@ -55,6 +57,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), DictionaryHomeActivity.class);
                 startActivity(i);
+                getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
 
@@ -63,6 +66,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), JumbledWordsActivity.class);
                 startActivity(i);
+                getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
 
@@ -71,14 +75,16 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), MeaningActivity.class);
                 startActivity(i);
+                getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
 
         comprehension.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), MeaningActivity.class);
+                Intent i = new Intent(getContext(), ComprehensionsActivity.class);
                 startActivity(i);
+                getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
 
