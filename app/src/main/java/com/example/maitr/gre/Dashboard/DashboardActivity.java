@@ -34,17 +34,9 @@ public class DashboardActivity extends AppCompatActivity {
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.container,new HomeFragment()).commit();
                         return true;
-                    case R.id.navigation_contests:
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.container,new ContestsFragment()).commit();
-                        return true;
                     case R.id.navigation_profile:
                         fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.container,new ProfileFragment()).commit();
-                        return true;
-                    case R.id.navigation_notifications:
-                        fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.container,new NotificationsFragment()).commit();
                         return true;
                 }
                 return false;
