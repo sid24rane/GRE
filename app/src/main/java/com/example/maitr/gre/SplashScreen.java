@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.maitr.gre.Dashboard.DashboardActivity;
 import com.example.maitr.gre.Login.LoginActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -23,8 +26,18 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(SplashScreen.this,LoginActivity.class);
-                startActivity(i);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    Intent i = new Intent(SplashScreen.this, DashboardActivity.class);
+                    startActivity(i);
+                    finish();
+                    overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+                } else {
+                    Intent i = new Intent(SplashScreen.this, LoginActivity.class);
+                    startActivity(i);
+                    finish();
+                    overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+                }
             }
         }, duration);
     }

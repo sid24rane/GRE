@@ -29,7 +29,7 @@
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".Signup.SignupActivity" />
         <activity android:name=".Dashboard.DashboardActivity" />
-        <activity android:name=".WordDetailActivity" />
+        <activity android:name=".Word_Detail.WordDetailActivity" />
         <activity android:name=".Dictionary.DictionaryHomeActivity" />
         <activity android:name=".Dictionary.DictionaryActivity" />
         <activity android:name=".Comprehension.ComprehensionsActivity" />

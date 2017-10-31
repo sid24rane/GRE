@@ -1,7 +1,9 @@
-package com.example.maitr.gre;
+package com.example.maitr.gre.Word_Detail;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.maitr.gre.R;
 
 public class WordDetailActivity extends AppCompatActivity {
 

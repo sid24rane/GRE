@@ -9,11 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.maitr.gre.Dictionary.DictionaryActivity;
 import com.example.maitr.gre.Dictionary.DictionaryHomeActivity;
 import com.example.maitr.gre.Jumbled_Words.JumbledWordsActivity;
 import com.example.maitr.gre.R;
-import com.example.maitr.gre.WordDetailActivity;
+import com.example.maitr.gre.Word_Detail.WordDetailActivity;
 import com.example.maitr.gre.Word_Meaning.MeaningActivity;
 
 
