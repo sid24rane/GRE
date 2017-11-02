@@ -22,7 +22,6 @@ public class DictionaryActivity extends AppCompatActivity {
 
     private CardStackView cardStackView;
     private FlashCardAdapter flashCardAdapter;
-    private ProgressBar progressBar;
     private FirebaseFirestore db;
 
     @Override
@@ -33,7 +32,6 @@ public class DictionaryActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         cardStackView = (CardStackView) findViewById(R.id.activity_main_card_stack_view);
-        progressBar = (ProgressBar) findViewById(R.id.activity_main_progress_bar);
 
         load();
 
@@ -44,12 +42,11 @@ public class DictionaryActivity extends AppCompatActivity {
         flashCardAdapter = new FlashCardAdapter(DictionaryActivity.this);
         flashCardAdapter.addAll(fetchFlashCards());
         cardStackView.setAdapter(flashCardAdapter);
-        progressBar.setVisibility(View.GONE);
     }
 
     private List<FlashCard> fetchFlashCards() {
 
-        List<FlashCard> data = new ArrayList<>();
+        final List<FlashCard> data = new ArrayList<>();
 
         String level = getIntent().getStringExtra("level");
 
@@ -61,24 +58,18 @@ public class DictionaryActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()){
                                 for (DocumentSnapshot doc:task.getResult()){
-                    
+                                    String word  = doc.getString("word");
+                                    String meaning = doc.getString("meaning");
+                                    data.add(new FlashCard(word,meaning));
+                                    flashCardAdapter.notifyDataSetChanged();
                                 }
+                                Log.d("FIREBASE-WL-FETCHED","success!");
                             }else{
                                 Log.d("FIREBASE-WL-FETCHED","failed");
                             }
                     }
                 });
 
-
-        data.add(new FlashCard("Lol","Laughing out loud"));
-        data.add(new FlashCard("LMAO","Laughing my ass off"));
-        data.add(new FlashCard("HAHA","Laughing"));
-        data.add(new FlashCard("Lol","Laughing out loud"));
-        data.add(new FlashCard("LMAO","Laughing my ass off"));
-        data.add(new FlashCard("HAHA","Laughing"));
-        data.add(new FlashCard("Lol","Laughing out loud"));
-        data.add(new FlashCard("LMAO","Laughing my ass off"));
-        data.add(new FlashCard("HAHA","Laughing"));
         return data;
     }
 
