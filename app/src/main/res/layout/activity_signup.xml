@@ -40,6 +40,20 @@
                 />
 
             <EditText
+                android:id="@+id/signup_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@layout/round_button_with_outline"
+                android:drawableLeft="@drawable/user"
+                android:drawablePadding="10dp"
+                android:hint="Name"
+                android:inputType="textPersonName"
+                android:padding="6dp"
+                android:textSize="12dp"
+                />
+
+            <EditText
                 android:id="@+id/signup_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

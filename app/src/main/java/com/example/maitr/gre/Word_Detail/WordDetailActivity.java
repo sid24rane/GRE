@@ -74,18 +74,25 @@ public class WordDetailActivity extends AppCompatActivity {
     private void load() {
 
         String word_id = getIntent().getStringExtra("word_id");
+
         if (word_id!=null){
+
             DocumentReference ref = db.collection("words").document(word_id);
+
             ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()){
                         DocumentSnapshot data = task.getResult();
                         if (data!=null){
+
                             Log.d("FIREBASE-WORD", "DocumentSnapshot data: " + task.getResult().getData());
                             word.setText(data.getString("word"));
                             meaning.setText(data.getString("meaning"));
                             sentence.setText(data.getString("sentence"));
+
+                            // TODO: 1/11/17 fetch antonyms and synonyms
+
                         }else{
                             Log.d("FIREBASE-WORD", "NO data found");
                         }

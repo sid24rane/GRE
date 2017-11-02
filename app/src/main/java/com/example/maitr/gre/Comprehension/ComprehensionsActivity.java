@@ -10,18 +10,24 @@ import android.widget.TextView;
 
 import com.example.maitr.gre.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class ComprehensionsActivity extends AppCompatActivity {
 
-    private TextView qs, optionA, optionB, optionC, optionD, answer;
+    private TextView qs, optionA, optionB, optionC, optionD, answer,qsid;
     private Button next;
     private FirebaseFirestore db;
     private ArrayList<Comprehension> allqs = new ArrayList<>();
@@ -58,8 +64,14 @@ public class ComprehensionsActivity extends AppCompatActivity {
                                 m.setD(document.getString("D"));
                                 m.setQuestion(document.getString("question"));
                                 m.setAnswer(document.getString("Answer"));
+                                m.setId(document.getId());
                                 allqs.add(m);
                                 answers_pairs.put(document.getString("question"),document.getString("Answer"));
+
+                                // initial
+
+                                display(nextQs());
+
                             }
                         } else {
                             Log.d("FIREBASE-Meaning", "Error getting documents: ", task.getException());
@@ -71,6 +83,8 @@ public class ComprehensionsActivity extends AppCompatActivity {
     private void init() {
 
         qs = (TextView) findViewById(R.id.comprehensionQuestion);
+        qsid = (TextView) findViewById(R.id.questionid);
+
         optionA = (TextView) findViewById(R.id.compOptionA);
         optionB = (TextView) findViewById(R.id.compOptionB);
         optionC = (TextView) findViewById(R.id.compOptionC);
@@ -79,6 +93,7 @@ public class ComprehensionsActivity extends AppCompatActivity {
         next = (Button) findViewById(R.id.nextquestion);
 
         answer.setVisibility(View.INVISIBLE);
+        qsid.setVisibility(View.INVISIBLE);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +106,7 @@ public class ComprehensionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                performCheck(optionA.getText().toString(),qs.getText().toString());
+                performCheck(optionA.getText().toString(),qs.getText().toString(),optionA);
                 optionB.setClickable(false);
                 optionC.setClickable(false);
                 optionD.setClickable(false);
@@ -102,7 +117,7 @@ public class ComprehensionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                performCheck(optionB.getText().toString(),qs.getText().toString());
+                performCheck(optionB.getText().toString(),qs.getText().toString(),optionB);
                 optionA.setClickable(false);
                 optionC.setClickable(false);
                 optionD.setClickable(false);
@@ -113,7 +128,7 @@ public class ComprehensionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                performCheck(optionC.getText().toString(),qs.getText().toString());
+                performCheck(optionC.getText().toString(),qs.getText().toString(),optionC);
                 optionB.setClickable(false);
                 optionA.setClickable(false);
                 optionD.setClickable(false);
@@ -124,7 +139,7 @@ public class ComprehensionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                performCheck(optionD.getText().toString(),qs.getText().toString());
+                performCheck(optionD.getText().toString(),qs.getText().toString(),optionD);
                 optionB.setClickable(false);
                 optionC.setClickable(false);
                 optionA.setClickable(false);
@@ -143,22 +158,120 @@ public class ComprehensionsActivity extends AppCompatActivity {
         answer.setText(c.getAnswer());
     }
 
-
-    private void performCheck(String selected,String current_word){
+    private void performCheck(String selected,String current_word,TextView current_selected){
 
         if (selected.equals(answers_pairs.get(current_word))){
-            // mark & store
+
+            // make green
+            current_selected.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+
+            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            // update db
+            markComprehensions(userid,qsid.getText().toString());
+
         }else{
+
+            // mark red
+            current_selected.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+
             // show answer
-            // mark
             answer.setVisibility(View.VISIBLE);
         }
 
         display(nextQs());
     }
 
+    private void markComprehensions(final String userid, final String comprehension_id) {
+
+        DocumentReference ref = db.collection("comprehension").document(comprehension_id);
+
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+
+                    DocumentSnapshot doc = task.getResult();
+
+                    Map<String, Object> users = doc.getData();
+
+                    if (users!=null){
+                        int next = users.size();
+                        users.put(String.valueOf(next),userid);
+                    }else{
+                        Map<String,Object> newuser = new HashMap<>();
+                        newuser.put(String.valueOf(0),userid);
+                    }
+
+
+                    //update db
+                    db.collection("comprehension").document(comprehension_id)
+                            .set(users)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                    Log.d("UPDATE-DB-MEANING","Success!");
+
+                                    // update profile
+                                    updateProfile(userid);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d("UPDATE-DB-MEANING","failure!");
+                                }
+                            });
+                }else{
+                    Log.d("FIREBASE-INSERT-USER","failed");
+                }
+            }
+        });
+
+    }
+
+
     private Comprehension nextQs(){
         return allqs.get(new Random().nextInt(allqs.size()));
+    }
+
+    private void updateProfile(final String userid){
+
+        DocumentReference ref = db.collection("profiles").document(userid);
+
+        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()){
+
+                    // update
+                    DocumentSnapshot doc = task.getResult();
+                    int comprehensions = Integer.parseInt(doc.getString("comprehensions"));
+                    comprehensions++;
+
+                    DocumentReference ref = db.collection("profiles").document(userid);
+                    ref.update("comprehensions",String.valueOf(comprehensions))
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("FIREBASE-UPD-C-PROFILE","success!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d("FIREBASE-UPD-C-PROFILE","failed");
+                                }
+                            });
+
+                }else{
+                    Log.d("FIREBASE-UPD-C-PROFILE","failed to fetch user profile");
+                }
+            }
+        });
+
     }
 
 

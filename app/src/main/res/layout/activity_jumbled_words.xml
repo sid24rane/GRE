@@ -26,6 +26,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/jumbledWordid"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="32sp"
+                    />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -54,6 +64,26 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="80dp"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Next"
+                    android:layout_weight="0.5"
+                    android:id="@+id/nextword"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Show me the answer"
+                    android:layout_weight="0.5"
+                    android:id="@+id/wordanswer"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -10,15 +10,17 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true">
         <activity android:name=".SplashScreen"
             android:hardwareAccelerated="false"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,15 +28,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login.LoginActivity" />
-        <activity android:name=".Signup.SignupActivity" />
-        <activity android:name=".Dashboard.DashboardActivity" />
-        <activity android:name=".Word_Detail.WordDetailActivity" />
-        <activity android:name=".Dictionary.DictionaryHomeActivity" />
-        <activity android:name=".Dictionary.DictionaryActivity" />
-        <activity android:name=".Comprehension.ComprehensionsActivity" />
-        <activity android:name=".Word_Meaning.MeaningActivity" />
-        <activity android:name=".Jumbled_Words.JumbledWordsActivity"></activity>
+        <activity android:name=".Login.LoginActivity" android:label="Login" android:screenOrientation="portrait"/>
+        <activity android:name=".Signup.SignupActivity" android:label="Signup" android:screenOrientation="portrait"/>
+        <activity android:name=".Dashboard.DashboardActivity" android:label="Home" android:screenOrientation="portrait"/>
+        <activity android:name=".Word_Detail.WordDetailActivity" android:label="Word Information" android:screenOrientation="portrait"/>
+        <activity android:name=".Dictionary.DictionaryHomeActivity" android:label="Dictionary" android:screenOrientation="portrait"/>
+        <activity android:name=".Dictionary.DictionaryActivity" android:label="Dictionary" android:screenOrientation="portrait"/>
+        <activity android:name=".Comprehension.ComprehensionsActivity" android:label="Comprehensions" android:screenOrientation="portrait"/>
+        <activity android:name=".Word_Meaning.MeaningActivity" android:label="Word Meaning" android:screenOrientation="portrait"/>
+        <activity android:name=".Jumbled_Words.JumbledWordsActivity" android:label="Jumbled Words" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

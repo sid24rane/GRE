@@ -12,8 +12,17 @@ public class Meaning {
     private String c;
     private String d;
     private String answer;
+    private String id;
 
     Meaning(){}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getWord() {
         return word;
