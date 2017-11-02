@@ -231,7 +231,6 @@ public class ComprehensionsActivity extends AppCompatActivity {
 
     }
 
-
     private Comprehension nextQs(){
         return allqs.get(new Random().nextInt(allqs.size()));
     }

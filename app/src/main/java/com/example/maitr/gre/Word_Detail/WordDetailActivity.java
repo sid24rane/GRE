@@ -18,6 +18,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class WordDetailActivity extends AppCompatActivity {
@@ -46,6 +47,7 @@ public class WordDetailActivity extends AppCompatActivity {
         textToSpeech = new TextToSpeech(WordDetailActivity.this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
+
                 if (status == TextToSpeech.SUCCESS) {
 
                     int result = textToSpeech.setLanguage(Locale.ENGLISH);
@@ -64,6 +66,7 @@ public class WordDetailActivity extends AppCompatActivity {
         sound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 speakOut(word.getText().toString());
                 speakOut(meaning.getText().toString());
             }
@@ -110,11 +113,13 @@ public class WordDetailActivity extends AppCompatActivity {
                         if (data!=null){
 
                             Log.d("FIREBASE-WORD", "DocumentSnapshot data: " + task.getResult().getData());
+
                             word.setText(data.getString("word"));
                             meaning.setText(data.getString("meaning"));
                             sentence.setText(data.getString("sentence"));
 
-                            // TODO: 1/11/17 fetch antonyms and synonyms
+                            synonym.setText(getString((ArrayList<String>) data.get("synonyms")));
+                            antonym.setText(getString((ArrayList<String>) data.get("antonyms")));
 
                             progressDialog.dismiss();
                         }else{
@@ -127,6 +132,14 @@ public class WordDetailActivity extends AppCompatActivity {
         }
     }
 
+    private String getString(ArrayList<String> r){
+        StringBuffer synons = new StringBuffer();
+        for (String s:r){
+            synons.append(s);
+            synons.append("\n");
+        }
+        return synons.toString();
+    }
     private void speakOut(String s) {
         textToSpeech.speak(s,TextToSpeech.QUEUE_ADD,null);
     }
