@@ -40,7 +40,22 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textStyle="bold"
+                    android:clickable="false"
                     android:id="@+id/today_word"
+                    android:textAllCaps="true"
+                    android:textColor="#fff"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="40dp"
+                    android:textSize="18dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:clickable="false"
+                    android:visibility="gone"
+                    android:id="@+id/today_word_id"
                     android:textAllCaps="true"
                     android:textColor="#fff"
                     android:layout_marginTop="10dp"

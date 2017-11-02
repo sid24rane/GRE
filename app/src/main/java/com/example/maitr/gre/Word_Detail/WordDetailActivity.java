@@ -1,5 +1,6 @@
 package com.example.maitr.gre.Word_Detail;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
@@ -71,11 +72,32 @@ public class WordDetailActivity extends AppCompatActivity {
         load();
     }
 
+    @Override
+    protected void onDestroy() {
+
+        //Close the Text to Speech Library
+        if(textToSpeech != null) {
+
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+            Log.d("TEXT TO SPEECH", "TTS Destroyed");
+        }
+        super.onDestroy();
+
+    }
+
     private void load() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(WordDetailActivity.this);
+        progressDialog.setMessage("Loading word please wait..");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         String word_id = getIntent().getStringExtra("word_id");
 
         if (word_id!=null){
+
+            Log.d("word-id",word_id);
 
             DocumentReference ref = db.collection("words").document(word_id);
 
@@ -83,6 +105,7 @@ public class WordDetailActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()){
+
                         DocumentSnapshot data = task.getResult();
                         if (data!=null){
 
@@ -93,6 +116,7 @@ public class WordDetailActivity extends AppCompatActivity {
 
                             // TODO: 1/11/17 fetch antonyms and synonyms
 
+                            progressDialog.dismiss();
                         }else{
                             Log.d("FIREBASE-WORD", "NO data found");
                         }

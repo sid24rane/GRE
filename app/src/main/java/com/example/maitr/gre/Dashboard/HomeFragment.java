@@ -17,6 +17,7 @@ import com.example.maitr.gre.Comprehension.ComprehensionsActivity;
 import com.example.maitr.gre.Dictionary.DictionaryHomeActivity;
 import com.example.maitr.gre.Jumbled_Words.JumbledWordsActivity;
 import com.example.maitr.gre.R;
+import com.example.maitr.gre.Word_Detail.TodayWord;
 import com.example.maitr.gre.Word_Detail.WordDetailActivity;
 import com.example.maitr.gre.Word_Meaning.MeaningActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,6 +41,7 @@ public class HomeFragment extends Fragment {
     private CardView comprehension;
     private FirebaseFirestore db;
     private TextView wordofday;
+    private TextView wordid;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -54,7 +56,7 @@ public class HomeFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-
+        wordid = (TextView) view.findViewById(R.id.today_word_id);
         wordofday = (TextView) view.findViewById(R.id.today_word);
         wordOfTheDay = (CardView) view.findViewById(R.id.wordOfTheDay);
         wordList = (CardView) view.findViewById(R.id.wordList);
@@ -67,6 +69,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), WordDetailActivity.class);
+                i.putExtra("word_id",wordid.getText().toString());
                 startActivity(i);
                 getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
@@ -123,7 +126,7 @@ public class HomeFragment extends Fragment {
 
         if (stored_date == null || !(stored_date.equals(date))){
 
-            final ArrayList<String> words = new ArrayList<>();
+            final ArrayList<TodayWord> words = new ArrayList<>();
 
             db.collection("words")
                     .get()
@@ -134,13 +137,14 @@ public class HomeFragment extends Fragment {
                             if (task.isSuccessful()){
 
                                 for (DocumentSnapshot doc : task.getResult()){
-                                    words.add(doc.getString("word"));
+                                    words.add(new TodayWord(doc.getString("word"),doc.getId()));
                                 }
 
                                 Collections.shuffle(words);
-                                String res = words.get(0);
-                                saveWordOfTheDay(res,date);
-                                setWordOfTheDay(res);
+                                String res = words.get(0).getWord();
+                                String id = words.get(0).getId();
+                                saveWordOfTheDay(res,date,id);
+                                setWordOfTheDay(res,id);
                                 Log.d("FIREBASE-WL-FETCHED","success!");
                             }else{
                                 Log.d("FIREBASE-WOD-FETCHED","failed");
@@ -158,10 +162,12 @@ public class HomeFragment extends Fragment {
 
     private void setWordOfTheDay(){
         wordofday.setText(getWordOfTheDay());
+        wordid.setText(getWordId());
     }
 
-    private void setWordOfTheDay(String word){
+    private void setWordOfTheDay(String word,String id){
         wordofday.setText(word);
+        wordid.setText(id);
     }
 
     private String StoredDate() {
@@ -170,18 +176,25 @@ public class HomeFragment extends Fragment {
         return pref.getString("creation",null);
     }
 
+    private String getWordId(){
+        SharedPreferences pref = getActivity().getSharedPreferences("word", 0); // 0 - for private mode
+        return pref.getString("word-id",null);
+    }
+
     private String getWordOfTheDay(){
         SharedPreferences pref = getActivity().getSharedPreferences("word", 0); // 0 - for private mode
         return pref.getString("word-of-the-day",null);
     }
 
-    private void saveWordOfTheDay(String res,String date) {
+    private void saveWordOfTheDay(String res,String date,String id) {
 
         SharedPreferences pref = getActivity().getSharedPreferences("word", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("word-of-the-day",res);
         editor.putString("creation",date);
+        editor.putString("word-id",id);
         editor.commit();
 
     }
 }
+
