@@ -1,5 +1,6 @@
 package com.example.maitr.gre.Comprehension;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,10 @@ public class ComprehensionsActivity extends AppCompatActivity {
 
     private void load() {
 
+        final ProgressDialog progressDialog = new ProgressDialog(ComprehensionsActivity.this);
+        progressDialog.setMessage("Loading questions please wait..");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         db.collection("comprehensions")
                 .get()
@@ -69,9 +74,9 @@ public class ComprehensionsActivity extends AppCompatActivity {
                                 answers_pairs.put(document.getString("question"),document.getString("Answer"));
 
                                 // initial
-
                                 display(nextQs());
 
+                                progressDialog.dismiss();
                             }
                         } else {
                             Log.d("FIREBASE-Meaning", "Error getting documents: ", task.getException());

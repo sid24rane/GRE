@@ -1,28 +1,25 @@
 package com.example.maitr.gre.Dictionary;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 
+import com.daprlabs.aaron.swipedeck.SwipeDeck;
 import com.example.maitr.gre.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.yuyakaido.android.cardstackview.CardStackView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DictionaryActivity extends AppCompatActivity {
 
-    private CardStackView cardStackView;
+    private SwipeDeck swipeDeck;
     private FlashCardAdapter flashCardAdapter;
     private FirebaseFirestore db;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,46 +28,54 @@ public class DictionaryActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        cardStackView = (CardStackView) findViewById(R.id.activity_main_card_stack_view);
-
+        swipeDeck = (SwipeDeck) findViewById(R.id.swipe_deck);
         load();
 
     }
 
     private void load() {
 
-        flashCardAdapter = new FlashCardAdapter(DictionaryActivity.this);
-        flashCardAdapter.addAll(fetchFlashCards());
-        cardStackView.setAdapter(flashCardAdapter);
+        progressDialog = new ProgressDialog(DictionaryActivity.this);
+        progressDialog.setMessage("Loading dictionary please wait..");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        flashCardAdapter = new FlashCardAdapter(DictionaryActivity.this,swipeDeck);
+        swipeDeck.setAdapter(flashCardAdapter);
+        fetchFlashCards();
     }
 
-    private List<FlashCard> fetchFlashCards() {
 
-        final List<FlashCard> data = new ArrayList<>();
+    private void fetchFlashCards() {
 
-        String level = getIntent().getStringExtra("level");
+
+        final int level = Integer.parseInt(getIntent().getStringExtra("level"));
 
         db.collection("words")
-                .whereEqualTo("level",level)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()){
                                 for (DocumentSnapshot doc:task.getResult()){
-                                    String word  = doc.getString("word");
-                                    String meaning = doc.getString("meaning");
-                                    data.add(new FlashCard(word,meaning));
-                                    flashCardAdapter.notifyDataSetChanged();
+                                    int word_level  = (int) (long) doc.get("level");
+                                    if (word_level == level){
+                                        Log.d("FIREBASE-Meaning", doc.getId() + " => " + doc.getString("word"));
+                                        String word  = doc.getString("word");
+                                        String meaning = doc.getString("meaning");
+                                        String sentence = doc.getString("sentence");
+                                        flashCardAdapter.add(new FlashCard(word,meaning,sentence));
+                                        flashCardAdapter.notifyDataSetChanged();
+                                    }
                                 }
                                 Log.d("FIREBASE-WL-FETCHED","success!");
+                                progressDialog.dismiss();
                             }else{
                                 Log.d("FIREBASE-WL-FETCHED","failed");
                             }
                     }
                 });
 
-        return data;
     }
 
 }

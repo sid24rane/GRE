@@ -1,6 +1,7 @@
 package com.example.maitr.gre.Dashboard;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -120,6 +121,11 @@ public class HomeFragment extends Fragment {
 
     private void fetchWordOfTheDay(){
 
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Loading please wait..");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         final String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
         String stored_date = StoredDate();
@@ -146,6 +152,8 @@ public class HomeFragment extends Fragment {
                                 saveWordOfTheDay(res,date,id);
                                 setWordOfTheDay(res,id);
                                 Log.d("FIREBASE-WL-FETCHED","success!");
+
+                                progressDialog.dismiss();
                             }else{
                                 Log.d("FIREBASE-WOD-FETCHED","failed");
                             }
@@ -156,6 +164,8 @@ public class HomeFragment extends Fragment {
             // same day
             // set text
             setWordOfTheDay();
+
+            progressDialog.dismiss();
         }
 
     }

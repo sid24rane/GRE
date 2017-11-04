@@ -7,13 +7,26 @@ package com.example.maitr.gre.Dictionary;
 public class FlashCard {
     private String term;
     private String definition;
+    private String sentence;
+
+    public FlashCard(String term, String definition, String sentence) {
+        this.term = term;
+        this.definition = definition;
+        this.sentence = sentence;
+    }
+
+    public String getSentence() {
+        return sentence;
+    }
+
+    public void setSentence(String sentence) {
+        this.sentence = sentence;
+    }
+
 
     FlashCard(){}
 
-    public FlashCard(String term, String definition) {
-        this.term = term;
-        this.definition = definition;
-    }
+
 
     public String getTerm() {
         return term;

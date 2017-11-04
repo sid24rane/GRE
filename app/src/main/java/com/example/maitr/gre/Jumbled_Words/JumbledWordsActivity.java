@@ -1,5 +1,6 @@
 package com.example.maitr.gre.Jumbled_Words;
 
+import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -95,6 +96,11 @@ public class JumbledWordsActivity extends AppCompatActivity {
 
     private void load() {
 
+        final ProgressDialog progressDialog = new ProgressDialog(JumbledWordsActivity.this);
+        progressDialog.setMessage("Loading profile please wait..");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         //// TODO: 1/11/17 only fetch those qs nt solved yet
         db.collection("jumbled_words")
                 .get()
@@ -115,6 +121,8 @@ public class JumbledWordsActivity extends AppCompatActivity {
 
                                 // initial
                                 display(nextQs());
+
+                                progressDialog.dismiss();
 
                             }else{
                                 Log.d("FIREBASE-JUM-FAILED","FAILED!");

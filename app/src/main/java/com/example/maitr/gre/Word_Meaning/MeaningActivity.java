@@ -1,5 +1,6 @@
 package com.example.maitr.gre.Word_Meaning;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -135,6 +136,11 @@ public class MeaningActivity extends AppCompatActivity {
 
     private void load() {
 
+        final ProgressDialog progressDialog = new ProgressDialog(MeaningActivity.this);
+        progressDialog.setMessage("Loading words please wait..");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         //// TODO: 1/11/17 only fetch nt solved user words
         db.collection("guess_meaning")
                 .get()
@@ -151,13 +157,15 @@ public class MeaningActivity extends AppCompatActivity {
                                 m.setD(document.getString("D"));
                                 m.setWord(document.getString("word"));
                                 m.setAnswer(document.getString("Answer"));
-                                m.setId(document.getId());
+                                m.setId(document.getString("word_id"));
                                 allwords.add(m);
                                 answers_pairs.put(document.getString("word"),document.getString("Answer"));
                             }
 
                             // initial
                             display(nextQs());
+
+                            progressDialog.dismiss();
 
                         } else {
                             Log.d("FIREBASE-Meaning", "Error getting documents: ", task.getException());

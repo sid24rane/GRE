@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daprlabs.aaron.swipedeck.SwipeDeck;
 import com.example.maitr.gre.R;
 
 import java.util.Locale;
@@ -24,10 +26,12 @@ import java.util.Locale;
 public class FlashCardAdapter extends ArrayAdapter<FlashCard>{
 
     private TextToSpeech textToSpeech;
+    private SwipeDeck swipeDeck;
 
-    FlashCardAdapter(Context context)
+    FlashCardAdapter(Context context,SwipeDeck swipeDeck)
     {
         super(context,0);
+        this.swipeDeck = swipeDeck;
         textToSpeech = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -71,11 +75,20 @@ public class FlashCardAdapter extends ArrayAdapter<FlashCard>{
 
         holder.term.setText(flashCard.getTerm());
         holder.definition.setText(flashCard.getDefinition());
+        holder.sentence.setText(flashCard.getSentence());
+
         holder.speak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                     speakOut(flashCard.getTerm());
                     speakOut(flashCard.getDefinition());
+            }
+        });
+
+        holder.next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                swipeDeck.swipeTopCardLeft(180);
             }
         });
 
@@ -89,13 +102,16 @@ public class FlashCardAdapter extends ArrayAdapter<FlashCard>{
 
         public TextView term;
         public TextView definition;
-        public Button speak;
+        public ImageView speak;
+        public ImageView next;
+        public TextView sentence;
 
         public ViewHolder(View view) {
             this.term = (TextView) view.findViewById(R.id.term);
             this.definition = (TextView) view.findViewById(R.id.definition);
-            this.speak = (Button) view.findViewById(R.id.speak);
-
+            this.speak = (ImageView) view.findViewById(R.id.speak);
+            this.sentence = (TextView) view.findViewById(R.id.sentence);
+            this.next = (ImageView) view.findViewById(R.id.next);
         }
     }
 }
