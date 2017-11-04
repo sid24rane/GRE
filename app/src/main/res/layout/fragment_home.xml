@@ -158,7 +158,7 @@
         <android.support.v7.widget.CardView
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/comprehension"
+            android:id="@+id/echo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -178,13 +178,42 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="40dp"
                     android:layout_gravity="center"
-                    android:text="COMPREHENSION"
+                    android:text="ECHO"
                     android:textColor="#fff"
                     android:textSize="16dp"/>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/comprehension"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:elevation="10dp"
+            android:clickable="true"
+            app:cardBackgroundColor="#660035"
+            app:cardCornerRadius="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="40dp"
+                    android:layout_gravity="center"
+                    android:text="COMPREHENSION"
+                    android:textColor="#fff"
+                    android:textSize="16dp"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
     </LinearLayout>
     </ScrollView>

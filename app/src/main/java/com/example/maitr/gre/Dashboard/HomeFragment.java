@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.maitr.gre.Comprehension.ComprehensionsActivity;
 import com.example.maitr.gre.Dictionary.DictionaryHomeActivity;
+import com.example.maitr.gre.EchoActivity;
 import com.example.maitr.gre.Jumbled_Words.JumbledWordsActivity;
 import com.example.maitr.gre.R;
 import com.example.maitr.gre.Word_Detail.TodayWord;
@@ -40,6 +41,7 @@ public class HomeFragment extends Fragment {
     private CardView jumbledWords;
     private CardView wordMeaning;
     private CardView comprehension;
+    private CardView echo;
     private FirebaseFirestore db;
     private TextView wordofday;
     private TextView wordid;
@@ -64,7 +66,16 @@ public class HomeFragment extends Fragment {
         jumbledWords = (CardView) view.findViewById(R.id.jumble);
         wordMeaning = (CardView) view.findViewById(R.id.wordMeaning);
         comprehension = (CardView) view.findViewById(R.id.comprehension);
+        echo = (CardView) view.findViewById(R.id.echo);
 
+        echo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), EchoActivity.class);
+                startActivity(i);
+                getActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+            }
+        });
 
         wordOfTheDay.setOnClickListener(new View.OnClickListener() {
             @Override

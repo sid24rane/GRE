@@ -1,5 +1,7 @@
 package com.example.maitr.gre.Word_Meaning;
 
+import java.util.ArrayList;
+
 /**
  * Created by sid24rane on 1/11/17.
  */
@@ -13,6 +15,26 @@ public class Meaning {
     private String d;
     private String answer;
     private String id;
+
+    public String getMeaningid() {
+        return meaningid;
+    }
+
+    public void setMeaningid(String meaningid) {
+        this.meaningid = meaningid;
+    }
+
+    private String meaningid;
+
+    public ArrayList<String> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<String> users) {
+        this.users = users;
+    }
+
+    private ArrayList<String> users = new ArrayList<>();
 
     Meaning(){}
 
