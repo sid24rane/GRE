@@ -1,6 +1,7 @@
 package com.example.maitr.gre.WordList;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,8 +66,9 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
 
                     for (Word word : allwords) {
 
-                        if (word.getWord().toLowerCase().contains(charString) ) {
+                        String w = word.getWord().toString().toLowerCase();
 
+                        if (w.startsWith(charString)){
                             filteredList.add(word);
                         }
                     }
