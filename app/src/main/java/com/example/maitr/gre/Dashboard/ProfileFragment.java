@@ -33,6 +33,7 @@ public class ProfileFragment extends Fragment {
     private TextView comprehensions;
     private TextView meaning;
     private TextView dictionary;
+    private TextView echo;
     private TextView jumbledwords;
     private FirebaseFirestore db;
     private TextView name;
@@ -57,6 +58,7 @@ public class ProfileFragment extends Fragment {
         dictionary = (TextView) mview.findViewById(R.id.progressDictionary);
         jumbledwords = (TextView) mview.findViewById(R.id.progressJumbled);
         name = (TextView) mview.findViewById(R.id.name);
+        echo = (TextView) mview.findViewById(R.id.echo);
 
         log.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +103,7 @@ public class ProfileFragment extends Fragment {
                         int comprehensions_score = Integer.parseInt(doc.getString("comprehensions"));
                         int dictionary_score = Integer.parseInt(doc.getString("dictionary"));
                         int jumbled_words_score = Integer.parseInt(doc.getString("jumbled_words"));
+                        int echo_score = Integer.parseInt(doc.getString("echo"));
 
                         String username = doc.getString("name");
 
@@ -109,6 +112,7 @@ public class ProfileFragment extends Fragment {
                         String mtotal = getData("guess_meaning");
                         String dtotal = getData("words");
                         String jtotal = getData("jumbled_words");
+                        String etotal = getData("echo");
 
                         //set text
                         comprehensions.setText("Comprehension : " + comprehensions_score + " / " + ctotal);
@@ -116,6 +120,7 @@ public class ProfileFragment extends Fragment {
                         jumbledwords.setText("Jumbled Words : " + jumbled_words_score + " / " + jtotal);
                         meaning.setText("Meaning : " + meaning_score + " / " + mtotal);
                         name.setText("Hello, " + username);
+                        echo.setText("Echo : " + echo_score + " / " + etotal);
 
                         progressDialog.dismiss();
 

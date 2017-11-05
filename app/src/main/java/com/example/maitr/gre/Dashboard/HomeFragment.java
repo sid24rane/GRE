@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.example.maitr.gre.Comprehension.ComprehensionsActivity;
 import com.example.maitr.gre.Dictionary.DictionaryHomeActivity;
-import com.example.maitr.gre.EchoActivity;
+import com.example.maitr.gre.Echo.EchoActivity;
 import com.example.maitr.gre.Jumbled_Words.JumbledWordsActivity;
 import com.example.maitr.gre.R;
 import com.example.maitr.gre.Word_Detail.TodayWord;

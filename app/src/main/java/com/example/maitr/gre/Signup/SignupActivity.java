@@ -124,6 +124,7 @@ public class SignupActivity extends AppCompatActivity {
         profile.put("guess_meaning",String.valueOf(0));
         profile.put("jumbled_words",String.valueOf(0));
         profile.put("name",name.getText().toString());
+        profile.put("echo",String.valueOf(0));
 
         //create profile
         db.collection("profiles")

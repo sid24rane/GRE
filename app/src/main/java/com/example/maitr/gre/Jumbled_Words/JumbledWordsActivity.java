@@ -1,6 +1,7 @@
 package com.example.maitr.gre.Jumbled_Words;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,8 +10,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.maitr.gre.DoneActivity;
+import com.example.maitr.gre.Echo.EchoActivity;
 import com.example.maitr.gre.R;
+import com.example.maitr.gre.Word_Meaning.Meaning;
+import com.example.maitr.gre.Word_Meaning.MeaningActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -36,7 +43,9 @@ public class JumbledWordsActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private Button next_check;
     private Button showanswer;
-    private HashMap<String,Object> answer_pairs = new HashMap<>();
+    private String userid;
+    private Jumbled current;
+    private TextView correctanswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,7 @@ public class JumbledWordsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_jumbled_words);
 
         db = FirebaseFirestore.getInstance();
+        userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         init();
         load();
@@ -58,22 +68,22 @@ public class JumbledWordsActivity extends AppCompatActivity {
         jumbledwordid = (TextView) findViewById(R.id.jumbledWordid);
         showanswer = (Button) findViewById(R.id.wordanswer);
         next_check = (Button) findViewById(R.id.nextword);
+        correctanswer = (TextView) findViewById(R.id.CorrectAnswer);
 
-        jumbledwordid.setVisibility(View.INVISIBLE);
-        showanswer.setVisibility(View.INVISIBLE);
 
         next_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String userin = answer.getText().toString();
+                String userin = answer.getText().toString().trim();
 
                 if (userin.length() > 0){
 
                     // perform check
-                    performCheck(jumbledWord.getText().toString(),userin);
+                    performCheck(userin);
 
                 }else{
+
                     // next qs
                     display(nextQs());
                 }
@@ -84,134 +94,171 @@ public class JumbledWordsActivity extends AppCompatActivity {
         showanswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    answer.setText(getAnswer(jumbledWord.getText().toString()));
+                    correctanswer.setVisibility(View.VISIBLE);
             }
         });
 
     }
 
-    private String getAnswer(String word){
-            return (String) answer_pairs.get(word);
+    private void performCheck(String user_ans){
+
+        String correct_answer = correctanswer.getText().toString().split(" ")[1].trim();
+
+        if (user_ans.equals(correct_answer)){
+
+            // remove current qs from list
+            Iterator<Jumbled> iter = allwords.iterator();
+            while (iter.hasNext()) {
+                Jumbled m = iter.next();
+                String s = m.getWord();
+                String st = jumbledWord.getText().toString();
+                if (s.equals(st)){
+                    iter.remove();
+                }
+            }
+
+            // update db
+            markJumbled();
+
+            //show next qs
+            display(nextQs());
+        }else{
+            wrongAns();
+        }
     }
+
+    private void wrongAns() {
+
+        answer.setText("");
+        Toast.makeText(JumbledWordsActivity.this, "Oops, Wrong answer! Try again", Toast.LENGTH_SHORT).show();
+    }
+
+    private void markJumbled(){
+
+        HashMap<String,Object> data = new HashMap<>();
+
+        ArrayList<String> users = current.getUsers();
+
+        if (users.size() == 1 && (users.get(0)).equals("0")){
+            users.remove(0);
+            users.add(userid);
+        }else{
+            users.add(userid);
+        }
+
+        data.put("users",users);
+
+
+        //update db
+        DocumentReference ref = db.collection("jumbled_words").document(current.getId());
+        ref.update(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Log.d("UPDATE-DB-JUMBLED","Success!");
+
+                        // update profile
+                        updateProfile();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("UPDATE-DB-JUMBLED","failure!");
+                        Log.d("reason",e.getMessage());
+                    }
+                });
+    }
+
+    private void display(Jumbled jumbled){
+
+        current = jumbled;
+
+        answer.setText("");
+        hint.setText(jumbled.getHint());
+        jumbledWord.setText(jumbled.getWord());
+
+        correctanswer.setText("Answer: " + jumbled.getAnswer());
+        jumbledwordid.setText(jumbled.getId());
+
+        correctanswer.setVisibility(View.INVISIBLE);
+        jumbledwordid.setVisibility(View.GONE);
+
+    }
+
 
     private void load() {
 
         final ProgressDialog progressDialog = new ProgressDialog(JumbledWordsActivity.this);
-        progressDialog.setMessage("Loading profile please wait..");
+        progressDialog.setMessage("Loading words please wait..");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        //// TODO: 1/11/17 only fetch those qs nt solved yet
         db.collection("jumbled_words")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()){
-                                for (DocumentSnapshot document:task.getResult()){
-                                    Log.d("FIREBASE-JUMBLED", document.getId() + " => " + document.getData());
+                        if (task.isSuccessful()){
+                            for (DocumentSnapshot document:task.getResult()){
+
+                                Log.d("FIREBASE-JUMBLED", document.getId() + " => " + document.getData());
+
+                                ArrayList<String> users = (ArrayList<String>)document.get("users");
+
+                                if (!(alreadySolved(users))){
+
                                     Jumbled j = new Jumbled();
                                     j.setId(document.getId());
                                     j.setAnswer(document.getString("answer"));
                                     j.setHint(document.getString("hint"));
                                     j.setWord(document.getString("word"));
+                                    j.setUsers((ArrayList<String>) document.get("users"));
                                     allwords.add(j);
-                                    answer_pairs.put(document.getString("word"),document.getString("answer"));
                                 }
+
+                            }
+                            progressDialog.dismiss();
+
+                            if (!(allwords.isEmpty())) {
+
+                                Log.d("allqs-size",String.valueOf(allwords.size()));
 
                                 // initial
                                 display(nextQs());
 
-                                progressDialog.dismiss();
-
                             }else{
-                                Log.d("FIREBASE-JUM-FAILED","FAILED!");
+                                done();
                             }
+                        }else{
+                            Log.d("FIREBASE-JUM-FAILED","FAILED!");
+                        }
                     }
                 });
     }
 
-    private void performCheck(String word, String user_answer){
+    private boolean alreadySolved(ArrayList<String> users){
 
-            String ans = getAnswer(word);
-
-            if (ans.equals(user_answer)){
-
-                // update db
-                String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                markJumbled(userid,jumbledwordid.getText().toString());
-
-                // display next qs
-                display(nextQs());
-
-            }else{
-                // wrong answer
-                showanswer.setVisibility(View.VISIBLE);
-                //change bg of ans
-                answer.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+        Iterator<String> iter = users.iterator();
+        while (iter.hasNext()) {
+            String muser = iter.next();
+            if (muser.equals(userid)){
+                return true;
             }
+        }
+        return false;
     }
 
-    private void display(Jumbled jumbled){
-
-        hint.setText(jumbled.getHint());
-        answer.setText(jumbled.getWord());
-        jumbledWord.setText(jumbled.getWord());
-        jumbledwordid.setText(jumbled.getId());
-
+    private void done() {
+        Intent i = new Intent(JumbledWordsActivity.this,DoneActivity.class);
+        i.putExtra("from","jumbled-words");
+        startActivity(i);
+        finish();
+        overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
     }
 
-
-    private void markJumbled(final String userid, final String jumbled_id) {
-
-        DocumentReference ref = db.collection("jumbled_words").document(jumbled_id);
-
-        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-
-                    DocumentSnapshot doc = task.getResult();
-
-                    Map<String, Object> users = doc.getData();
-
-                    if (users!=null){
-                        int next = users.size();
-                        users.put(String.valueOf(next),userid);
-                    }else{
-                        Map<String,Object> newuser = new HashMap<>();
-                        newuser.put(String.valueOf(0),userid);
-                    }
-
-
-                    //update db
-                    db.collection("jumbled_words").document(jumbled_id)
-                            .set(users)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-
-                                    Log.d("UPDATE-DB-MEANING","Success!");
-
-                                    // update profile
-                                    updateProfile(userid);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d("UPDATE-DB-MEANING","failure!");
-                                }
-                            });
-                }else{
-                    Log.d("FIREBASE-INSERT-USER","failed");
-                }
-            }
-        });
-
-    }
-
-    private void updateProfile(final String userid){
+    private void updateProfile(){
 
         DocumentReference ref = db.collection("profiles").document(userid);
 
@@ -250,7 +297,12 @@ public class JumbledWordsActivity extends AppCompatActivity {
     }
 
     private Jumbled nextQs(){
-        return allwords.get(new Random().nextInt(allwords.size()));
+        if (allwords.isEmpty()){
+            done();
+        }else{
+            return allwords.get(new Random().nextInt(allwords.size()));
+        }
+        return null;
     }
 
 }

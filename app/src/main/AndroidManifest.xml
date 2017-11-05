@@ -66,7 +66,7 @@
             android:name=".Jumbled_Words.JumbledWordsActivity"
             android:label="Jumbled Words"
             android:screenOrientation="portrait" />
-        <activity android:name=".EchoActivity" />
+        <activity android:name=".Echo.EchoActivity" />
         <activity android:name=".DoneActivity"></activity>
     </application>
 

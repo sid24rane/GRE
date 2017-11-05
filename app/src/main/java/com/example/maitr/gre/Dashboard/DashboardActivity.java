@@ -103,6 +103,7 @@ public class DashboardActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()){
                             saveData(String.valueOf(task.getResult().size()),"words");
+                            saveData(String.valueOf(task.getResult().size()),"echo");
                         }
                     }
                 });

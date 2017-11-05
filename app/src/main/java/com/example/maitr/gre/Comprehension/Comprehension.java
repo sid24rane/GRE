@@ -1,5 +1,7 @@
 package com.example.maitr.gre.Comprehension;
 
+import java.util.ArrayList;
+
 /**
  * Created by sid24rane on 1/11/17.
  */
@@ -13,6 +15,16 @@ public class Comprehension {
     private String d;
     private String answer;
     private String id;
+
+    public ArrayList<String> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<String> users) {
+        this.users = users;
+    }
+
+    private ArrayList<String> users = new ArrayList<>();
 
     public String getId() {
         return id;

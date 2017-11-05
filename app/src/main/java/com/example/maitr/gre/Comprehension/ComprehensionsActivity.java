@@ -1,6 +1,8 @@
 package com.example.maitr.gre.Comprehension;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.maitr.gre.DoneActivity;
 import com.example.maitr.gre.R;
+import com.example.maitr.gre.Word_Meaning.Meaning;
+import com.example.maitr.gre.Word_Meaning.MeaningActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
@@ -32,57 +38,20 @@ public class ComprehensionsActivity extends AppCompatActivity {
     private Button next;
     private FirebaseFirestore db;
     private ArrayList<Comprehension> allqs = new ArrayList<>();
-    private HashMap<String,String> answers_pairs = new HashMap<>();
+    private String userid;
+    private Comprehension current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comprehensions);
 
-
+        userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         db = FirebaseFirestore.getInstance();
 
         init();
         load();
 
-    }
-
-    private void load() {
-
-        final ProgressDialog progressDialog = new ProgressDialog(ComprehensionsActivity.this);
-        progressDialog.setMessage("Loading questions please wait..");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-
-        db.collection("comprehensions")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                Log.d("FIREBASE-COMPREHENSIONS", document.getId() + " => " + document.getData());
-                                Comprehension m = new Comprehension();
-                                m.setA(document.getString("A"));
-                                m.setB(document.getString("B"));
-                                m.setC(document.getString("C"));
-                                m.setD(document.getString("D"));
-                                m.setQuestion(document.getString("question"));
-                                m.setAnswer(document.getString("Answer"));
-                                m.setId(document.getId());
-                                allqs.add(m);
-                                answers_pairs.put(document.getString("question"),document.getString("Answer"));
-
-                                // initial
-                                display(nextQs());
-
-                                progressDialog.dismiss();
-                            }
-                        } else {
-                            Log.d("FIREBASE-Meaning", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
     }
 
     private void init() {
@@ -110,137 +79,209 @@ public class ComprehensionsActivity extends AppCompatActivity {
         optionA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                performCheck(optionA.getText().toString(),qs.getText().toString(),optionA);
-                optionB.setClickable(false);
-                optionC.setClickable(false);
-                optionD.setClickable(false);
+                performCheck(optionA);
             }
         });
 
         optionB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                performCheck(optionB.getText().toString(),qs.getText().toString(),optionB);
-                optionA.setClickable(false);
-                optionC.setClickable(false);
-                optionD.setClickable(false);
+                performCheck(optionB);
             }
         });
 
         optionC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                performCheck(optionC.getText().toString(),qs.getText().toString(),optionC);
-                optionB.setClickable(false);
-                optionA.setClickable(false);
-                optionD.setClickable(false);
+                performCheck(optionC);
             }
         });
 
-        optionD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    }
 
-                performCheck(optionD.getText().toString(),qs.getText().toString(),optionD);
-                optionB.setClickable(false);
-                optionC.setClickable(false);
-                optionA.setClickable(false);
 
+    private boolean alreadySolved(ArrayList<String> users){
+
+        Iterator<String> iter = users.iterator();
+        while (iter.hasNext()) {
+            String muser = iter.next();
+            if (muser.equals(userid)){
+                return true;
             }
-        });
+        }
+        return false;
+    }
+
+    private void load() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(ComprehensionsActivity.this);
+        progressDialog.setMessage("Loading questions please wait..");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        db.collection("comprehension")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            for (DocumentSnapshot document : task.getResult()) {
+
+                                Log.d("FIREBASE-COMPREHENSIONS", document.getId() + " => " + document.getData());
+
+                                ArrayList<String> users = (ArrayList<String>)document.get("users");
+
+                                if (!(alreadySolved(users))){
+
+                                    Comprehension m = new Comprehension();
+                                    m.setA(document.getString("A"));
+                                    m.setB(document.getString("B"));
+                                    m.setC(document.getString("C"));
+                                    m.setD(document.getString("D"));
+                                    m.setQuestion(document.getString("question"));
+                                    m.setAnswer(document.getString("Answer"));
+                                    m.setId(document.getId());
+                                    m.setUsers((ArrayList<String>) document.get("users"));
+                                    allqs.add(m);
+
+                                }
+                            }
+                            progressDialog.dismiss();
+
+                            if (!(allqs.isEmpty())) {
+
+                                Log.d("allqs-size",String.valueOf(allqs.size()));
+
+                                // initial
+                                display(nextQs());
+                            }else{
+                                done();
+                            }
+
+                        } else {
+                            Log.d("FIREBASE-Comprehensions", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void done() {
+
+        Intent i = new Intent(ComprehensionsActivity.this,DoneActivity.class);
+        i.putExtra("from","comprehensions");
+        startActivity(i);
+        finish();
+        overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+
     }
 
     private void display(Comprehension c){
+
+        resetViewBg();
+
+        current = c;
 
         qs.setText(c.getQuestion());
         optionA.setText(c.getA());
         optionB.setText(c.getB());
         optionC.setText(c.getC());
         optionD.setText(c.getD());
+
         answer.setText(c.getAnswer());
+        answer.setVisibility(View.INVISIBLE);
+        qsid.setText(c.getId());
+        qsid.setVisibility(View.INVISIBLE);
     }
 
-    private void performCheck(String selected,String current_word,TextView current_selected){
 
-        if (selected.equals(answers_pairs.get(current_word))){
+    private void resetViewBg(){
+
+        optionA.setBackgroundColor(Color.parseColor("#D3D3D3"));
+        optionB.setBackgroundColor(Color.parseColor("#D3D3D3"));
+        optionC.setBackgroundColor(Color.parseColor("#D3D3D3"));
+        optionD.setBackgroundColor(Color.parseColor("#D3D3D3"));
+    }
+
+    private void performCheck(final TextView current_selected) {
+
+
+        String selected = (current_selected.getText().toString()).split(" ")[1];
+
+        if (selected.equals(answer.getText().toString())){
 
             // make green
-            current_selected.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            current_selected.setBackgroundColor(Color.parseColor("#00d86f"));
 
-            String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            // remove current qs from list
+            Iterator<Comprehension> iter = allqs.iterator();
+
+            while (iter.hasNext()) {
+                Comprehension m = iter.next();
+                String s = m.getQuestion();
+                String st = qs.getText().toString();
+                if (s.equals(st)){
+                    iter.remove();
+                }
+            }
 
             // update db
-            markComprehensions(userid,qsid.getText().toString());
+            markComprehension();
+
+            // show next qs
+            display(nextQs());
 
         }else{
 
-            // mark red
+            // make red
             current_selected.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
 
-            // show answer
-            answer.setVisibility(View.VISIBLE);
         }
 
-        display(nextQs());
     }
 
-    private void markComprehensions(final String userid, final String comprehension_id) {
+    private void markComprehension() {
 
-        DocumentReference ref = db.collection("comprehension").document(comprehension_id);
 
-        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
+        HashMap<String,Object> data = new HashMap<>();
 
-                    DocumentSnapshot doc = task.getResult();
+        ArrayList<String> users = current.getUsers();
 
-                    Map<String, Object> users = doc.getData();
+        if (users.size() == 1 && (users.get(0)).equals("0")){
+            users.remove(0);
+            users.add(userid);
+        }else{
+            users.add(userid);
+        }
 
-                    if (users!=null){
-                        int next = users.size();
-                        users.put(String.valueOf(next),userid);
-                    }else{
-                        Map<String,Object> newuser = new HashMap<>();
-                        newuser.put(String.valueOf(0),userid);
+        data.put("users",users);
+
+        Log.d("current=>",users.toString());
+
+        //update db
+        DocumentReference ref = db.collection("guess_meaning").document(current.getId());
+        ref.update(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        Log.d("UPDATE-DB-Comprehension","Success!");
+
+                        // update profile
+                        updateProfile();
                     }
-
-
-                    //update db
-                    db.collection("comprehension").document(comprehension_id)
-                            .set(users)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-
-                                    Log.d("UPDATE-DB-MEANING","Success!");
-
-                                    // update profile
-                                    updateProfile(userid);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d("UPDATE-DB-MEANING","failure!");
-                                }
-                            });
-                }else{
-                    Log.d("FIREBASE-INSERT-USER","failed");
-                }
-            }
-        });
-
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("UPDATE-DB-Comprehension","failure!");
+                        Log.d("reason",e.getMessage());
+                    }
+                });
     }
 
-    private Comprehension nextQs(){
-        return allqs.get(new Random().nextInt(allqs.size()));
-    }
 
-    private void updateProfile(final String userid){
+    private void updateProfile(){
 
         DocumentReference ref = db.collection("profiles").document(userid);
 
@@ -279,4 +320,12 @@ public class ComprehensionsActivity extends AppCompatActivity {
     }
 
 
+    private Comprehension nextQs(){
+        if (allqs.isEmpty()){
+            done();
+        }else{
+            return allqs.get(new Random().nextInt(allqs.size()));
+        }
+        return null;
+    }
 }
