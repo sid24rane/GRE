@@ -97,6 +97,13 @@ public class ComprehensionsActivity extends AppCompatActivity {
             }
         });
 
+        optionD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performCheck(optionD);
+            }
+        });
+
     }
 
 
@@ -183,10 +190,10 @@ public class ComprehensionsActivity extends AppCompatActivity {
         current = c;
 
         qs.setText(c.getQuestion());
-        optionA.setText(c.getA());
-        optionB.setText(c.getB());
-        optionC.setText(c.getC());
-        optionD.setText(c.getD());
+        optionA.setText("A) "+c.getA());
+        optionB.setText("B) "+c.getB());
+        optionC.setText("C) " + c.getC());
+        optionD.setText("D) " + c.getD());
 
         answer.setText(c.getAnswer());
         answer.setVisibility(View.INVISIBLE);
@@ -208,7 +215,10 @@ public class ComprehensionsActivity extends AppCompatActivity {
 
         String selected = (current_selected.getText().toString()).split(" ")[1];
 
-        if (selected.equals(answer.getText().toString())){
+        Log.d("selected =>",selected);
+        Log.d("answer =>",answer.getText().toString());
+
+        if (selected.contentEquals(answer.getText().toString())){
 
             // make green
             current_selected.setBackgroundColor(Color.parseColor("#00d86f"));
@@ -259,7 +269,7 @@ public class ComprehensionsActivity extends AppCompatActivity {
         Log.d("current=>",users.toString());
 
         //update db
-        DocumentReference ref = db.collection("guess_meaning").document(current.getId());
+        DocumentReference ref = db.collection("comprehension").document(current.getId());
         ref.update(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

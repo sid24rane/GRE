@@ -46,6 +46,7 @@ public class JumbledWordsActivity extends AppCompatActivity {
     private String userid;
     private Jumbled current;
     private TextView correctanswer;
+    private boolean isAnsAlreadyShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,18 +76,27 @@ public class JumbledWordsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String userin = answer.getText().toString().trim();
-
-                if (userin.length() > 0){
-
-                    // perform check
-                    performCheck(userin);
-
-                }else{
+                if (isAnsAlreadyShown){
 
                     // next qs
                     display(nextQs());
+
+                }else{
+
+                    String userin = answer.getText().toString().toLowerCase().trim();
+
+                    if (userin.length() > 0){
+
+                        // perform check
+                        performCheck(userin);
+
+                    }else{
+
+                        // next qs
+                        display(nextQs());
+                    }
                 }
+
             }
         });
 
@@ -94,6 +104,7 @@ public class JumbledWordsActivity extends AppCompatActivity {
         showanswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                    isAnsAlreadyShown = true;
                     correctanswer.setVisibility(View.VISIBLE);
             }
         });
@@ -102,7 +113,7 @@ public class JumbledWordsActivity extends AppCompatActivity {
 
     private void performCheck(String user_ans){
 
-        String correct_answer = correctanswer.getText().toString().split(" ")[1].trim();
+        String correct_answer = correctanswer.getText().toString().toLowerCase().split(" ")[1].trim();
 
         if (user_ans.equals(correct_answer)){
 
@@ -174,9 +185,10 @@ public class JumbledWordsActivity extends AppCompatActivity {
     private void display(Jumbled jumbled){
 
         current = jumbled;
+        isAnsAlreadyShown = false;
 
         answer.setText("");
-        hint.setText(jumbled.getHint());
+        hint.setText("Hint : " + jumbled.getHint());
         jumbledWord.setText(jumbled.getWord());
 
         correctanswer.setText("Answer: " + jumbled.getAnswer());

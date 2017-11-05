@@ -310,8 +310,6 @@ public class MeaningActivity extends AppCompatActivity {
         data.put("users",users);
 
         Log.d("current=>",users.toString());
-//        Log.d("meaningid =>",meaningid.getText().toString());
-//        Log.d("meaningid  lol =>",current.getId());
 
         //update db
         DocumentReference ref = db.collection("guess_meaning").document(current.getMeaningid());
