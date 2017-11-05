@@ -17,6 +17,7 @@
             android:layout_margin="8dp"
             android:elevation="10dp"
             android:clickable="true"
+            android:background="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="#000c66"
             app:cardCornerRadius="4dp">
 
@@ -73,6 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:elevation="10dp"
+            android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             app:cardBackgroundColor="#660035"
             app:cardCornerRadius="4dp">
@@ -88,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="40dp"
                     android:layout_gravity="center"
-                    android:text="WORD LIST"
+                    android:text="FLASHCARDS"
                     android:textColor="#fff"
                     android:textSize="16dp"/>
 
@@ -103,6 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:elevation="10dp"
+            android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             app:cardBackgroundColor="#008039"
             app:cardCornerRadius="4dp">
@@ -133,6 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:elevation="10dp"
+            android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             app:cardBackgroundColor="#ce0030"
             app:cardCornerRadius="4dp">
@@ -163,6 +167,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:elevation="10dp"
+            android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             app:cardBackgroundColor="#ffa200"
             app:cardCornerRadius="4dp">
@@ -194,6 +199,7 @@
             android:layout_margin="8dp"
             android:elevation="10dp"
             android:clickable="true"
+            android:background="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="#660035"
             app:cardCornerRadius="4dp">
 

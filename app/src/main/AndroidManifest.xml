@@ -66,8 +66,12 @@
             android:name=".Jumbled_Words.JumbledWordsActivity"
             android:label="Jumbled Words"
             android:screenOrientation="portrait" />
-        <activity android:name=".Echo.EchoActivity" />
-        <activity android:name=".DoneActivity"></activity>
+        <activity android:name=".Echo.EchoActivity"
+            android:label="Echo"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DoneActivity"
+            android:label="Congrats!"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
