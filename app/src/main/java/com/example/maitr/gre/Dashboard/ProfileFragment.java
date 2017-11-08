@@ -58,7 +58,7 @@ public class ProfileFragment extends Fragment {
         dictionary = (TextView) mview.findViewById(R.id.progressDictionary);
         jumbledwords = (TextView) mview.findViewById(R.id.progressJumbled);
         name = (TextView) mview.findViewById(R.id.name);
-        echo = (TextView) mview.findViewById(R.id.echo);
+        echo = (TextView) mview.findViewById(R.id.progressEcho);
 
         log.setOnClickListener(new View.OnClickListener() {
             @Override

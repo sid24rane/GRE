@@ -21,11 +21,9 @@ import java.util.ArrayList;
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHolder> implements Filterable {
 
     private ArrayList<Word> allwords;
-    private ArrayList<Word> filtered;
 
     public WordListAdapter(ArrayList<Word> allwords) {
         this.allwords = allwords;
-        this.filtered = allwords;
     }
 
     @Override
@@ -45,7 +43,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return filtered.size();
+        return allwords.size();
     }
 
     @Override
@@ -54,39 +52,46 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
 
+                ArrayList<Word> filteredList = new ArrayList<>();
+
                 String charString = charSequence.toString();
 
                 if (charString.isEmpty()) {
-
-                    filtered = allwords;
-
+                    filteredList = allwords;
                 } else {
-
-                    ArrayList<Word> filteredList = new ArrayList<>();
-
-                    for (Word word : allwords) {
-
-                        String w = word.getWord().toString().toLowerCase();
-
-                        if (w.startsWith(charString)){
-                            filteredList.add(word);
-                        }
-                    }
-
-                    filtered = filteredList;
+                    filteredList = getFilteredResults(charString);
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = filtered;
+                filterResults.values = filteredList;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filtered = (ArrayList<Word>) filterResults.values;
-                notifyDataSetChanged();
+                allwords = (ArrayList<Word>) filterResults.values;
+                Log.d("filtered-values",allwords.toString());
+                WordListAdapter.this.notifyDataSetChanged();
             }
         };
+    }
+
+    protected ArrayList<Word> getFilteredResults(String query){
+
+            ArrayList<Word> results = new ArrayList<>();
+            for (Word word : allwords) {
+
+                    String w = word.getWord().toString().toLowerCase();
+
+                     if (w.startsWith(query)){
+                            results.add(word);
+                }
+            }
+            return results;
+    }
+
+    public void setData(ArrayList<Word> data) {
+        this.allwords = data;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

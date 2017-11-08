@@ -77,6 +77,16 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     />
+
+                <TextView
+                    android:textSize="15sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/progressEcho"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    />
+
             </LinearLayout>
         </android.support.v7.widget.CardView>
 

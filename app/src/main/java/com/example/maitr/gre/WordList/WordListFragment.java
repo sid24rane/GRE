@@ -140,14 +140,15 @@ public class WordListFragment extends Fragment{
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                wordListAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                wordListAdapter.setData(allwords);
+                wordListAdapter.notifyDataSetChanged();
                 wordListAdapter.getFilter().filter(newText);
-                return false;
+                return true;
             }
         });
     }
