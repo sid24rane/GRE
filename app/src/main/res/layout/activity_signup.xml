@@ -17,6 +17,7 @@
             android:layout_height="match_parent"
             android:layout_margin="25dp"
             android:orientation="vertical"
+            android:layout_gravity="center"
             >
 
             <TextView
@@ -26,7 +27,6 @@
                 android:layout_gravity="center_horizontal"
                 android:text="Signup"
                 android:textColor="@color/colorPrimary"
-                android:layout_marginTop="70dp"
                 android:textSize="20dp"
                 tools:ignore="MissingPrefix"/>
 
