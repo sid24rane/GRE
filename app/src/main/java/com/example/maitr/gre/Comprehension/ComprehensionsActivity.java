@@ -204,10 +204,10 @@ public class ComprehensionsActivity extends AppCompatActivity {
 
     private void resetViewBg(){
 
-        optionA.setBackgroundColor(Color.parseColor("#D3D3D3"));
-        optionB.setBackgroundColor(Color.parseColor("#D3D3D3"));
-        optionC.setBackgroundColor(Color.parseColor("#D3D3D3"));
-        optionD.setBackgroundColor(Color.parseColor("#D3D3D3"));
+        optionA.setTextColor(Color.parseColor("#808080"));
+        optionB.setTextColor(Color.parseColor("#808080"));
+        optionC.setTextColor(Color.parseColor("#808080"));
+        optionD.setTextColor(Color.parseColor("#808080"));
     }
 
     private void performCheck(final TextView current_selected) {
@@ -221,7 +221,7 @@ public class ComprehensionsActivity extends AppCompatActivity {
         if (selected.contentEquals(answer.getText().toString())){
 
             // make green
-            current_selected.setBackgroundColor(Color.parseColor("#00d86f"));
+            current_selected.setTextColor(Color.parseColor("#00d86f"));
 
             // remove current qs from list
             Iterator<Comprehension> iter = allqs.iterator();
@@ -244,7 +244,7 @@ public class ComprehensionsActivity extends AppCompatActivity {
         }else{
 
             // make red
-            current_selected.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+            current_selected.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
 
         }
 

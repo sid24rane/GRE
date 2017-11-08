@@ -14,9 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="4dp"
+        card_view:cardElevation="8dp"
         card_view:cardUseCompatPadding="true"
         android:layout_margin="8dp"
+        card_view:cardBackgroundColor="#e0f5ff"
         android:gravity="center_horizontal"
         android:padding="25dp">
 
@@ -37,52 +38,49 @@
                 android:id="@+id/comprehensionQuestion"
                 android:text="hsdgd ahgf yef qwfiuwy ______ wdhwiqywf"
                 android:textSize="20sp"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="10dp"
+                android:textColor="#000000"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/compOptionA"
                 android:text="A) abc"
-                android:background="#D3D3D3"
-                android:padding="7dp"
-                android:textSize="22sp"
+                android:padding="8dp"
+                android:textSize="16sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="40dp"
                 android:clickable="true"/>
 
             <TextView
-                android:background="#D3D3D3"
-                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/compOptionB"
                 android:text="B) abc"
-                android:textSize="22sp"
+                android:padding="8dp"
+                android:textSize="16sp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:clickable="true"/>
 
             <TextView
-                android:background="#D3D3D3"
-                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/compOptionC"
                 android:text="C) abc"
-                android:textSize="22sp"
+                android:padding="8dp"
+                android:textSize="16sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:clickable="true"/>
 
             <TextView
-                android:background="#D3D3D3"
-                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/compOptionD"
                 android:text="D) abc"
-                android:textSize="22sp"
+                android:padding="8dp"
+                android:textSize="16sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:clickable="true"/>
@@ -90,21 +88,24 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
+                android:padding="8dp"
                 android:id="@+id/comprehensionCorrectAnswer"
                 android:text="Answer: A)abc"
-                android:textSize="22sp"
+                android:textSize="16sp"
                 android:textColor="#00d86f"
                 />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_margin="5dp"
+                android:layout_margin="10dp"
                 android:layout_height="wrap_content">
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Next"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:textColor="#fff"
                     android:id="@+id/nextquestion"/>
             </LinearLayout>
         </LinearLayout>

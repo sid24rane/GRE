@@ -1,31 +1,27 @@
  <!-- TODO: Update blank fragment layout -->
-    <ScrollView android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+ <ScrollView android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     xmlns:android="http://schemas.android.com/apk/res/android"
+
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/wordOfTheDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:elevation="10dp"
-            android:clickable="true"
-            android:background="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="#000c66"
-            app:cardCornerRadius="4dp">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:orientation="vertical">
+                android:layout_height="120dp"
+                android:padding="12dp"
+                android:orientation="vertical"
+                android:id="@+id/wordOfTheDay"
+                android:clickable="true"
+                android:background="@drawable/wordofday"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -46,7 +42,6 @@
                     android:textAllCaps="true"
                     android:textColor="#fff"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="40dp"
                     android:textSize="18dp"/>
 
                 <TextView
@@ -64,26 +59,16 @@
                     android:textSize="18dp"/>
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/wordList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:elevation="10dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            app:cardBackgroundColor="#660035"
-            app:cardCornerRadius="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:orientation="vertical">
+                android:layout_height="120dp"
+                android:orientation="vertical"
+                android:id="@+id/wordList"
+                android:background="@drawable/flashcards"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -91,30 +76,21 @@
                     android:layout_margin="40dp"
                     android:layout_gravity="center"
                     android:text="FLASHCARDS"
+                    android:textStyle="bold"
                     android:textColor="#fff"
-                    android:textSize="16dp"/>
+                    android:textSize="18dp"/>
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/jumble"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:elevation="10dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            app:cardBackgroundColor="#008039"
-            app:cardCornerRadius="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:orientation="vertical">
+                android:layout_height="120dp"
+                android:background="@drawable/jumble"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:id="@+id/jumble"
+                android:clickable="true"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -123,29 +99,20 @@
                     android:layout_gravity="center"
                     android:text="JUMBLED WORDS"
                     android:textColor="#fff"
-                    android:textSize="16dp"/>
+                    android:textStyle="bold"
+                    android:textSize="18dp"/>
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/wordMeaning"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:elevation="10dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            app:cardBackgroundColor="#ce0030"
-            app:cardCornerRadius="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:orientation="vertical">
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:id="@+id/wordMeaning"
+                android:background="@drawable/meaning"
+                android:clickable="true"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -154,29 +121,20 @@
                     android:layout_gravity="center"
                     android:text="MEANING OF THE WORD"
                     android:textColor="#fff"
-                    android:textSize="16dp"/>
+                    android:textStyle="bold"
+                    android:textSize="18dp"/>
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/echo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:elevation="10dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            app:cardBackgroundColor="#ffa200"
-            app:cardCornerRadius="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:orientation="vertical">
+                android:layout_height="120dp"
+                android:orientation="vertical"
+                android:id="@+id/echo"
+                android:clickable="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/echo"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -185,29 +143,20 @@
                     android:layout_gravity="center"
                     android:text="ECHO"
                     android:textColor="#fff"
-                    android:textSize="16dp"/>
+                    android:textStyle="bold"
+                    android:textSize="18dp"/>
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/comprehension"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:elevation="10dp"
-            android:clickable="true"
-            android:background="?android:attr/selectableItemBackground"
-            app:cardBackgroundColor="#660035"
-            app:cardCornerRadius="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:orientation="vertical">
+                android:layout_height="120dp"
+                android:orientation="vertical"
+                android:id="@+id/comprehension"
+                android:clickable="true"
+                android:background="@drawable/comprehension"
+                android:layout_marginTop="10dp"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -216,10 +165,10 @@
                     android:layout_gravity="center"
                     android:text="COMPREHENSION"
                     android:textColor="#fff"
-                    android:textSize="16dp"/>
+                    android:textStyle="bold"
+                    android:textSize="18dp"/>
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
 
     </LinearLayout>
     </ScrollView>

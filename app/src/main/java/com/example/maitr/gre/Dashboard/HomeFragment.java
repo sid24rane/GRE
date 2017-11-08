@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.maitr.gre.Comprehension.ComprehensionsActivity;
@@ -36,12 +37,12 @@ import java.util.Date;
 
 public class HomeFragment extends Fragment {
 
-    private CardView wordOfTheDay;
-    private CardView wordList;
-    private CardView jumbledWords;
-    private CardView wordMeaning;
-    private CardView comprehension;
-    private CardView echo;
+    private LinearLayout wordOfTheDay;
+    private LinearLayout wordList;
+    private LinearLayout jumbledWords;
+    private LinearLayout wordMeaning;
+    private LinearLayout comprehension;
+    private LinearLayout echo;
     private FirebaseFirestore db;
     private TextView wordofday;
     private TextView wordid;
@@ -61,12 +62,12 @@ public class HomeFragment extends Fragment {
 
         wordid = (TextView) view.findViewById(R.id.today_word_id);
         wordofday = (TextView) view.findViewById(R.id.today_word);
-        wordOfTheDay = (CardView) view.findViewById(R.id.wordOfTheDay);
-        wordList = (CardView) view.findViewById(R.id.wordList);
-        jumbledWords = (CardView) view.findViewById(R.id.jumble);
-        wordMeaning = (CardView) view.findViewById(R.id.wordMeaning);
-        comprehension = (CardView) view.findViewById(R.id.comprehension);
-        echo = (CardView) view.findViewById(R.id.echo);
+        wordOfTheDay = (LinearLayout) view.findViewById(R.id.wordOfTheDay);
+        wordList = (LinearLayout) view.findViewById(R.id.wordList);
+        jumbledWords = (LinearLayout) view.findViewById(R.id.jumble);
+        wordMeaning = (LinearLayout) view.findViewById(R.id.wordMeaning);
+        comprehension = (LinearLayout) view.findViewById(R.id.comprehension);
+        echo = (LinearLayout) view.findViewById(R.id.echo);
 
         echo.setOnClickListener(new View.OnClickListener() {
             @Override

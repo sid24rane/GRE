@@ -17,6 +17,7 @@
             android:layout_height="match_parent"
             android:layout_margin="25dp"
             android:orientation="vertical"
+            android:layout_gravity="center"
             >
 
             <TextView
@@ -27,7 +28,6 @@
                 android:text="Login"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20dp"
-                android:layout_marginTop="70dp"
                 tools:ignore="MissingPrefix"/>
 
             <View
